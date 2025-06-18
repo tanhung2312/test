@@ -16,14 +16,14 @@ const LoginComponent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('login');
 
-  // Mock database
+
   const mockUsers = [
     { username: 'admin', password: 'admin123' },
     { username: 'user1', password: 'password1' },
     { username: 'testuser', password: 'test123' }
   ];
 
-  // Check for existing session on component mount
+
   useEffect(() => {
     const savedSession = localStorage.getItem('userSession');
     if (savedSession) {
@@ -32,12 +32,12 @@ const LoginComponent = () => {
     }
   }, []);
 
-  // Validate if string contains unicode characters
+
   const hasUnicodeChars = (str) => {
     return /[^\x00-\x7F]/.test(str);
   };
 
-  // Handle input changes
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -45,7 +45,7 @@ const LoginComponent = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
     
-    // Clear errors when user starts typing
+
     if (errors[name] || errors.general) {
       setErrors(prev => ({
         ...prev,
@@ -55,7 +55,7 @@ const LoginComponent = () => {
     }
   };
 
-  // Validate form inputs
+
   const validateForm = () => {
     const newErrors = {
       username: '',
@@ -63,7 +63,7 @@ const LoginComponent = () => {
       general: ''
     };
 
-    // Check if fields are empty
+
     if (!formData.username || !formData.password) {
       newErrors.username = !formData.username ? 'border-red-500' : '';
       newErrors.password = !formData.password ? 'border-red-500' : '';
@@ -72,7 +72,7 @@ const LoginComponent = () => {
       return false;
     }
 
-    // Check for unicode characters in username
+
     if (hasUnicodeChars(formData.username)) {
       newErrors.username = 'border-red-500';
       newErrors.general = 'Username không được dùng kí tự unicode';
@@ -80,7 +80,7 @@ const LoginComponent = () => {
       return false;
     }
 
-    // Check for unicode characters in password
+
     if (hasUnicodeChars(formData.password)) {
       newErrors.password = 'border-red-500';
       newErrors.general = 'Password không được dùng kí tự unicode';
@@ -91,7 +91,7 @@ const LoginComponent = () => {
     return true;
   };
 
-  // Authenticate user
+
   const authenticateUser = () => {
     const user = mockUsers.find(u => u.username === formData.username);
     
@@ -114,7 +114,6 @@ const LoginComponent = () => {
     return true;
   };
 
-  // Handle login submission
   const handleLogin = (e) => {
     e.preventDefault();
     
@@ -126,7 +125,7 @@ const LoginComponent = () => {
       return;
     }
 
-    // Successful login
+
     if (formData.remember) {
       localStorage.setItem('userSession', JSON.stringify({
         username: formData.username,
@@ -143,7 +142,7 @@ const LoginComponent = () => {
     setCurrentPage('home');
   };
 
-  // Handle logout
+
   const handleLogout = () => {
     localStorage.removeItem('userSession');
     sessionStorage.removeItem('userSession');
@@ -153,12 +152,12 @@ const LoginComponent = () => {
     setErrors({ username: '', password: '', general: '' });
   };
 
-  // Simulate browser close/reopen
+
   const simulateBrowserRestart = () => {
-    // Clear session storage (simulates browser close)
+
     sessionStorage.clear();
     
-    // Check if user should remain logged in
+
     const savedSession = localStorage.getItem('userSession');
     if (savedSession) {
       alert('Trình duyệt đã được mở lại - Người dùng vẫn đăng nhập (Remember được chọn)');
@@ -169,7 +168,7 @@ const LoginComponent = () => {
     }
   };
 
-  // Navigation handlers
+
   const navigateToRegister = () => {
     setCurrentPage('register');
   };
@@ -182,7 +181,7 @@ const LoginComponent = () => {
     setCurrentPage('login');
   };
 
-  // Render different pages
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
